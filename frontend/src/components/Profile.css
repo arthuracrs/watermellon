@@ -1,0 +1,35 @@
+.profile-header{
+    position: relative;
+    padding-bottom: 5%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-user-header-banner{
+    width: 100%
+}
+
+.profile-user-icon{
+    position: absolute;
+    background-color: lightgray;
+    border-radius: 100%;
+    border: 5px solid white;
+    margin: 10px;
+    bottom: 0;
+    left: 0;
+    width: 25%;
+}
+
+.profile-user-info{
+    margin: 0 8%;
+    margin-bottom: 30px
+}
+
+.profile-edit-profile-button-invoker{
+    align-self: flex-end;
+}
+
+.profile-fake-edit-profile-invoker{
+    height: 58px;
+}

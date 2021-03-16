@@ -1,0 +1,33 @@
+.list-users-single-container {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    padding: 10px;
+}
+
+.list-users-single-container:hover {
+    cursor: pointer
+}
+
+.list-users-user-icon {
+    width: 70px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.list-users-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-users-single-username {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    
+}
+
+.no-underline{
+    text-decoration: none;
+}

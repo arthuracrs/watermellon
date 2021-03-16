@@ -1,0 +1,127 @@
+.edit-profile {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    justify-content: flex-end;
+}
+
+.edit-profile-button-invoker {
+    font-size: 12pt;
+    width: auto;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    margin: 10px 0;
+    margin-right: 3%;
+    background-color: #FF1744;
+}
+
+.edit-profile-button-invoker:hover {
+    cursor: pointer
+}
+
+
+.edit-profile-popup {
+    position: fixed;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0
+}
+
+.edit-profile-popup-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0px 3px 0px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 500px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.edit-profile-popup-exit-icon {
+    cursor: pointer;
+    margin: auto 20px auto 10px;
+    height: 30px
+}
+
+.edit-profile-popup-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px 0;
+    margin-bottom: 10px
+}
+
+.edit-profile-popup-header-div-1 {
+    width: 100%;
+    display: flex;
+    height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10px;
+    text-align: center;
+}
+
+
+.profile1-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+
+.profile1-header{
+    position: relative;
+    padding-bottom: 10%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile1-user-header-banner{
+    width: 100%
+}
+
+.profile1-user-icon{
+    position: absolute;
+    background-color: lightgray;
+    border-radius: 100%;
+    border: 5px solid white;
+    margin: 10px 10px 0 10px;
+    bottom: 0;
+    left: 0;
+    width: 20%;
+}
+
+.profile1-user-info{
+    margin: 0 8%;
+    margin-bottom: 30px
+}
+
+.profile1-edit-profile-button-invoker{
+    align-self: flex-end;
+    
+}
+
+.edit-profile1-bio{
+    font-size: 15pt;
+    width: 100%;
+    resize: none;
+    max-width: 100%;
+    min-height: 180px;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}

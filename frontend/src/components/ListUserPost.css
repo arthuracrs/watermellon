@@ -1,0 +1,10 @@
+.user-post-list{
+    display: flex;
+}
+.user-post-list-title-container{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.4);
+}

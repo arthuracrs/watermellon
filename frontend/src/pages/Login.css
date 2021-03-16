@@ -1,0 +1,59 @@
+
+
+.logo-container{
+    max-width: 400px;    
+    margin: 50px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-container img{
+    margin: 0 auto;
+    width: 100px
+    
+}
+
+.logo-container h2{
+    font-size: 25pt;
+    text-align: center;
+}
+
+.logo-container input{
+    padding: 5px;
+    height: 50px;
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid rgba(0,0,0, .4);
+    border-radius: 5px;
+    font-size: 14pt;
+}
+
+.logo-container .submit{
+    cursor: pointer;
+    font-size: 16pt;
+    font-weight: bold;
+    color: white;
+    background-color: #FF1744
+}
+
+.logo-container a{
+    color: #FF1744
+}
+
+.logo-container a:active, a:visited{color: #FF1744}
+
+.logo-container a:hover {
+    color: #AA0F2D;
+    cursor: pointer
+}
+.logo-container .link-container{
+    display: flex;
+    flex-direction:column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+
+
+

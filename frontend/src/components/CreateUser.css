@@ -1,0 +1,58 @@
+.create-user {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+}
+
+.create-user-container {
+    position: relative;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px
+}
+
+.create-user .exit-icon{
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    margin-right: 10px;
+    right: 0;
+    height: 30px
+}
+
+.create-user h2{
+    font-family: sans-serif
+}
+
+.create-user input {
+    padding: 5px;
+    height: 50px;
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid rgba(0, 0, 0, .4);
+    border-radius: 5px;
+    font-size: 14pt;
+}
+
+.create-user .submit {
+    cursor: pointer;
+    font-size: 16pt;
+    font-weight: bold;
+    color: white;
+    background-color: #FF1744
+}
+
+.create-user .logo-icon {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    width: 100px;
+}

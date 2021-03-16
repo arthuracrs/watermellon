@@ -1,0 +1,31 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-main {
+    flex: 80%;
+    border-right: 1px solid rgba(0,0,0, .4)
+}
+
+.dashboard-header {
+    flex: 20%;
+}
+
+@media only screen and (max-width: 600px) {
+    .dashboard {
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .dashboard-header {
+        order: 2;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
+    
+    .dashboard-main{
+        padding-bottom: 10%;
+    }
+}

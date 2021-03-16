@@ -1,0 +1,81 @@
+.create-post {
+    position: fixed;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+}
+
+.create-post-container{
+    position: relative;
+    display: flex;
+    flex-direction:column;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    height: 400px;
+}
+
+.create-post .exit-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    margin-right: 10px;
+    right: 0;
+    height: 30px
+}
+
+.create-post-textarea{
+    padding-top: 10px;
+    margin: 10px 0;
+    height: 100%;
+    font-size: 15pt;
+}
+
+.create-post .submit {
+    font-size: 12pt;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    margin: 10px 0;
+    background-color: #FF1744
+}
+
+.create-post .submit:hover {
+    cursor: pointer;
+    background-color: #AA0F2D;
+}
+
+.create-post-new-post{
+    width: 100%;
+    font-size: 12pt;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    margin: 10px 10px;
+    background-color: #FF1744;
+    cursor: pointer;
+}
+
+.create-post-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.create-post-invoke-button-container{
+    display: flex;
+    justify-content: center;
+}

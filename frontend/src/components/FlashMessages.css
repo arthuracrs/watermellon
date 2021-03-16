@@ -1,0 +1,36 @@
+.flash-messages{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.flash-message-container-error{
+    background-color: RGBA(255,101,80,0.4);
+    padding: 2px;
+    border-radius: 5px;
+    margin-bottom: 3px
+}
+.flash-messages-message-error{
+    display: flex;
+    color: red;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid RGBA(255,101,80,1);
+}
+
+.flash-message-container-ok{
+    background-color: RGBA(92,184,92,0.4);
+    padding: 2px;
+    border-radius: 5px;
+    margin-bottom: 3px
+}
+
+.flash-messages-message-ok{
+    display: flex;
+    color: RGBA(92,184,92,1);
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid RGBA(92,184,92,1);
+}
