@@ -56,10 +56,7 @@ router.post('/auth', autenticate, (req, res) => {
 
     res.json({
         flashMessages: flashMessages,
-        user: {
-            username: res.locals.user.username,
-            userId: res.locals.user._id
-        }
+        user: res.locals.user
     })
 })
 
@@ -223,7 +220,8 @@ router.get('/user/:username', autenticate, (req, res) => {
 
         res.json({
             flashMessages: flashMessages,
-            content: query
+            content: query,
+            user: res.locals.user
         })
     })
 })
@@ -409,46 +407,14 @@ router.put('/user', autenticate, (req, res) => {
         return res.json({ flashMessages })
     }
 
-    if (req.body.follow) {
-        let followUserId = ''
-        // o que vai ser seguido
-        db.User.findOne({ username: req.body.follow }, (error, followQuery) => {
-
+    db.User.updateOne({ username: res.locals.user.username }, req.body, { useFindAndModify: false, upsert: true },
+        (error, query) => {
             if (error) {
                 console.error(error)
 
                 flashMessages.push({ text: 'Erro', ok: false })
                 return res.json({ flashMessages })
             }
-
-            if (followQuery == null) {
-                flashMessages.push({
-                    text: 'O usuario ' + req.body.follow + ' não existe',
-                    ok: false
-                })
-
-                return res.json({ flashMessages })
-            }
-
-            // ser seguido
-            db.User.updateOne({ username: followQuery.username, followers: { $ne: res.locals.user._id } }, { $push: { followers: res.locals.user._id } }, (error, query) => {
-                if (error) {
-                    console.error(error)
-
-                    flashMessages.push({ text: 'Erro', ok: false })
-                    return res.json({ flashMessages })
-                }
-            })
-            // o que seguiu
-            db.User.updateOne({ username: res.locals.user.username, following: { $ne: followQuery._id } }, { $push: { following: followQuery._id } },
-                (error, query) => {
-                    if (error) {
-                        console.error(error)
-
-                        flashMessages.push({ text: 'Erro', ok: false })
-                        return res.json({ flashMessages })
-                    }
-                })
 
             flashMessages.push({
                 text: "Update feito",
@@ -457,9 +423,95 @@ router.put('/user', autenticate, (req, res) => {
 
             return res.json({ flashMessages })
         })
-    }
-    else {
-        db.User.updateOne({ username: res.locals.user.username }, req.body, { useFindAndModify: false, upsert: true },
+
+})
+
+
+
+// follow
+router.put('/user/:username/follow', autenticate, (req, res) => {
+    const flashMessages = []
+
+    // o que vai ser seguido
+    db.User.findOne({ username: req.params.username }, (error, followQuery) => {
+
+        if (error) {
+            console.error(error)
+
+            flashMessages.push({ text: 'Error', ok: false })
+            return res.json({ flashMessages })
+        }
+
+        if (followQuery == null) {
+            flashMessages.push({
+                text: 'O usuario ' + req.params.follow + ' não existe',
+                ok: false
+            })
+
+            return res.json({ flashMessages })
+        }
+
+        // ser seguido
+        db.User.updateOne({ username: followQuery.username, followers: { $ne: res.locals.user._id } }, { $push: { followers: res.locals.user._id } }, (error, query) => {
+            if (error) {
+                console.error(error)
+
+                flashMessages.push({ text: 'Error', ok: false })
+                return res.json({ flashMessages })
+            }
+        })
+        // o que seguiu
+        db.User.updateOne({ username: res.locals.user.username, following: { $ne: followQuery._id } }, { $push: { following: followQuery._id } },
+            (error, query) => {
+                if (error) {
+                    console.error(error)
+
+                    flashMessages.push({ text: 'Error', ok: false })
+                    return res.json({ flashMessages })
+                }
+            })
+
+        flashMessages.push({
+            text: "Follow feito",
+            ok: true
+        })
+
+        return res.json({ flashMessages })
+    })
+
+})
+// unfollow
+router.put('/user/:username/unfollow', autenticate, (req, res) => {
+    const flashMessages = []
+
+    db.User.findOne({ username: req.params.username }, (error, unFollowQuery) => {
+
+        if (error) {
+            console.error(error)
+
+            flashMessages.push({ text: 'Erro', ok: false })
+            return res.json({ flashMessages })
+        }
+
+        if (unFollowQuery == null) {
+            flashMessages.push({
+                text: 'O usuario ' + req.params.follow + ' não existe',
+                ok: false
+            })
+
+            return res.json({ flashMessages })
+        }
+
+        db.User.updateOne({ username: unFollowQuery.username }, { pull: { followers: res.locals.user._id } }, (error, query) => {
+            if (error) {
+                console.error(error)
+
+                flashMessages.push({ text: 'Erro', ok: false })
+                return res.json({ flashMessages })
+            }
+        })
+
+        db.User.updateOne({ username: res.locals.user.username }, { $pull: { following: unFollowQuery._id } },
             (error, query) => {
                 if (error) {
                     console.error(error)
@@ -467,17 +519,16 @@ router.put('/user', autenticate, (req, res) => {
                     flashMessages.push({ text: 'Erro', ok: false })
                     return res.json({ flashMessages })
                 }
-
-                flashMessages.push({
-                    text: "Update feito",
-                    ok: true
-                })
-
-                return res.json({ flashMessages })
             })
-    }
-})
 
+        flashMessages.push({
+            text: "Unfollow feito",
+            ok: true
+        })
+
+        return res.json({ flashMessages })
+    })
+})
 
 // feed
 router.get('/feed', autenticate, (req, res) => {
