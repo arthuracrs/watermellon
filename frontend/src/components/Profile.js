@@ -5,6 +5,7 @@ import Axios from 'axios'
 import ListUserPost from '../components/ListUserPost'
 import Loading from '../components/Loading'
 import EditProfile from '../components/EditProfile'
+import Follow from '../components/Follow'
 
 import UserIcon from '../assets/user-icon.png'
 import ProfileBanner from '../assets/profile-banner.jpg'
@@ -49,7 +50,7 @@ function Profile(props) {
                         <img className="profile-user-icon" alt="" src={UserIcon}/>
                         { props.loggedUser === pathUsername ? 
                         <EditProfile handleRefresh={handleRefresh} userProfile={userProfile} className="profile-edit-profile-button-invoker"/> 
-                        : <div className="profile-fake-edit-profile-invoker"></div>}
+                        : <Follow/>}
                     </div>
                     <div className="profile-user-info">
                         <h3>{pathUsername}</h3>

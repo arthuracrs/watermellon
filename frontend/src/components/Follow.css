@@ -1,0 +1,19 @@
+.follow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.follow-button {
+    font-size: 12pt;
+    width: auto;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    margin: 10px 0;
+    margin-right: 3%;
+    background-color: #FF1744;
+}
