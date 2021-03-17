@@ -37,9 +37,7 @@ const autenticate = (req, res, next) => {
                 })
                 return res.json({ flashMessages })
             }
-
-            res.locals.username = query.username
-            res.locals.userId = decoded.userId
+            res.locals.user = query
             next()
         })
 
@@ -56,7 +54,13 @@ router.post('/auth', autenticate, (req, res) => {
         ok: true
     })
 
-    res.json({ flashMessages: flashMessages, username: res.locals.username })
+    res.json({
+        flashMessages: flashMessages,
+        user: {
+            username: res.locals.user.username,
+            userId: res.locals.user._id
+        }
+    })
 })
 
 router.get('/', (req, res) => {
@@ -227,7 +231,7 @@ router.get('/user/:username', autenticate, (req, res) => {
 // create post
 router.post('/post', autenticate, (req, res) => {
     const flashMessages = []
-    const userId = res.locals.userId
+    const userId = res.locals.user._id
 
     if (req.body.content.length > 280) {
         flashMessages.push({
@@ -357,7 +361,7 @@ router.post('/comment/:postId', autenticate, (req, res) => {
     }
 
     const newComment = new db.Comment({
-        userId: res.locals.userId,
+        userId: res.locals.user._id,
         content: req.body.content
     })
 
@@ -422,12 +426,12 @@ router.put('/user', autenticate, (req, res) => {
                     text: 'O usuario ' + req.body.follow + ' não existe',
                     ok: false
                 })
-                
+
                 return res.json({ flashMessages })
             }
 
             // ser seguido
-            db.User.updateOne({ username: followQuery.username, followers: { $ne: res.locals.userId } }, { $push: { followers: res.locals.userId } }, (error, query) => {
+            db.User.updateOne({ username: followQuery.username, followers: { $ne: res.locals.user._id } }, { $push: { followers: res.locals.user._id } }, (error, query) => {
                 if (error) {
                     console.error(error)
 
@@ -436,7 +440,7 @@ router.put('/user', autenticate, (req, res) => {
                 }
             })
             // o que seguiu
-            db.User.updateOne({ username: res.locals.username, following: { $ne: followQuery._id } }, { $push: { following: followQuery._id } },
+            db.User.updateOne({ username: res.locals.user.username, following: { $ne: followQuery._id } }, { $push: { following: followQuery._id } },
                 (error, query) => {
                     if (error) {
                         console.error(error)
@@ -455,7 +459,7 @@ router.put('/user', autenticate, (req, res) => {
         })
     }
     else {
-        db.User.updateOne({ username: res.locals.username }, req.body, { useFindAndModify: false, upsert: true },
+        db.User.updateOne({ username: res.locals.user.username }, req.body, { useFindAndModify: false, upsert: true },
             (error, query) => {
                 if (error) {
                     console.error(error)
