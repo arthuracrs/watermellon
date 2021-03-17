@@ -28,7 +28,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         select: false,
         required: true
-    }
+    },
+    following: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    followers:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 })
 
 const commentSchema = new mongoose.Schema({

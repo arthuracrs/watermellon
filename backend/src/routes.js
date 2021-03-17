@@ -405,8 +405,11 @@ router.put('/user', autenticate, (req, res) => {
         return res.json({ flashMessages })
     }
 
-    db.User.updateOne({ username: res.locals.username }, req.body, { useFindAndModify: false, upsert: true },
-        (error, query) => {
+    if (req.body.follow) {
+        let followUserId = ''
+        // o que vai ser seguido
+        db.User.findOne({ username: req.body.follow }, (error, followQuery) => {
+
             if (error) {
                 console.error(error)
 
@@ -414,14 +417,61 @@ router.put('/user', autenticate, (req, res) => {
                 return res.json({ flashMessages })
             }
 
+            if (followQuery == null) {
+                flashMessages.push({
+                    text: 'O usuario ' + req.body.follow + ' não existe',
+                    ok: false
+                })
+                
+                return res.json({ flashMessages })
+            }
+
+            // ser seguido
+            db.User.updateOne({ username: followQuery.username, followers: { $ne: res.locals.userId } }, { $push: { followers: res.locals.userId } }, (error, query) => {
+                if (error) {
+                    console.error(error)
+
+                    flashMessages.push({ text: 'Erro', ok: false })
+                    return res.json({ flashMessages })
+                }
+            })
+            // o que seguiu
+            db.User.updateOne({ username: res.locals.username, following: { $ne: followQuery._id } }, { $push: { following: followQuery._id } },
+                (error, query) => {
+                    if (error) {
+                        console.error(error)
+
+                        flashMessages.push({ text: 'Erro', ok: false })
+                        return res.json({ flashMessages })
+                    }
+                })
+
             flashMessages.push({
                 text: "Update feito",
                 ok: true
             })
-    
+
             return res.json({ flashMessages })
         })
+    }
+    else {
+        db.User.updateOne({ username: res.locals.username }, req.body, { useFindAndModify: false, upsert: true },
+            (error, query) => {
+                if (error) {
+                    console.error(error)
 
+                    flashMessages.push({ text: 'Erro', ok: false })
+                    return res.json({ flashMessages })
+                }
+
+                flashMessages.push({
+                    text: "Update feito",
+                    ok: true
+                })
+
+                return res.json({ flashMessages })
+            })
+    }
 })
 
 
