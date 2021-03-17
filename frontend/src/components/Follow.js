@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Axios from 'axios'
 import { useParams } from 'react-router-dom'
 
 import './Follow.css'
 
-function Follow() {
+function Follow(props) {
 
     const { pathUsername } = useParams()
+    const [following, setFollowing] = useState(props.loggedUser.following.includes(props.userProfile._id))
 
     const followHandle = () => {
-        Axios.put(process.env.REACT_APP_API_URL + '/user', {follow: pathUsername}, { withCredentials: true })
+        setFollowing(true)
+        Axios.put(process.env.REACT_APP_API_URL + '/user/' + pathUsername + '/follow', {},{ withCredentials: true })
             .then(res => {
-                    
             })
     }
-
+    const unFollowHandle = () => {
+        setFollowing(false)
+        Axios.put(process.env.REACT_APP_API_URL + '/user/' + pathUsername + '/unfollow', {},{ withCredentials: true })
+            .then(res => {
+            })
+    }
     return (
         <div className="follow" >
-            
-            <input className="follow-button" type="submit" onClick={followHandle} value="Seguir" />
-            
+            {following ?
+            <input className="follow-button" type="submit" onClick={unFollowHandle} value="Deixar de seguir" />
+            : <input className="follow-button" type="submit" onClick={followHandle} value="Seguir" />}
         </div>
     )
 }
