@@ -502,7 +502,7 @@ router.put('/user/:username/unfollow', autenticate, (req, res) => {
             return res.json({ flashMessages })
         }
 
-        db.User.updateOne({ username: unFollowQuery.username }, { pull: { followers: res.locals.user._id } }, (error, query) => {
+        db.User.updateOne({ username: unFollowQuery.username }, { $pull: { followers: res.locals.user._id } }, (error, query) => {
             if (error) {
                 console.error(error)
 
