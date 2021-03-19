@@ -196,35 +196,7 @@ router.get('/users', autenticate, (req, res) => {
         })
     })
 })
-// search user
-router.get('/user/:username', autenticate, (req, res) => {
-    const flashMessages = []
 
-    db.User.findOne({ username: req.params.username }, (error, query) => {
-        if (error) {
-            console.error(error)
-
-            flashMessages.push({ text: 'Erro', ok: false })
-            res.json({ flashMessages })
-        }
-
-        if (query == null) {
-            flashMessages.push({ text: 'Usuario não encontrado', ok: false })
-            return res.json({ flashMessages })
-        }
-
-        flashMessages.push({
-            text: "Pesquisa feita com sucesso",
-            ok: true
-        })
-
-        res.json({
-            flashMessages: flashMessages,
-            content: query,
-            user: res.locals.user
-        })
-    })
-})
 
 // create post
 router.post('/post', autenticate, (req, res) => {
@@ -240,115 +212,98 @@ router.post('/post', autenticate, (req, res) => {
         return res.json({ flashMessages })
     }
 
-    db.User.findById(userId)
-        .then(query => {
+    const newPost = new db.Post({
+        userId: userId,
+        content: req.body.content
+    })
 
-
-            if (query == null) {
-                flashMessages.push({
-                    text: 'User does not exists',
-                    ok: false
-                })
-                return res.json({ flashMessages })
-            }
-
-            const newPost = new db.Post({
-                userId: userId,
-                content: req.body.content
-            })
-
-            newPost.save((error, model) => {
+    newPost.save((error, post) => {
+        db.User.findOneAndUpdate({ username: res.locals.user.username }, { $push: { posts: post._id } }, { new: true })
+            .exec((error, query) => {
                 if (error) {
                     console.error(error)
-                    return res.send(error)
+
+                    flashMessages.push({
+                        text: 'error',
+                        ok: false
+                    })
+                    return res.json({ flashMessages })
+
                 }
+
                 flashMessages.push({
-                    text: 'Post criado com sucesso',
+                    text: 'Postagem feita',
                     ok: true
                 })
-                res.json({ model, flashMessages })
-            })
-        })
-        .catch(error => {
-            console.error(error)
-            return res.send(error)
-        })
-})
 
-// get post by id
-router.get('/post/:postId', autenticate, (req, res) => {
-    db.Post.find({ _id: req.params.postId }).populate('userId comments')
-        .then(query => {
-            res.send(query)
-        })
-        .catch(error => {
-            console.error(error)
-            return res.send(error)
-        })
+                return res.json({ flashMessages })
+            })
+    })
+
+
 })
 
 // list user's posts
-router.get('/user/:username/post', autenticate, (req, res) => {
+router.get('/:username/posts', autenticate, (req, res) => {
 
     const flashMessages = []
 
     db.User.findOne({ username: req.params.username })
-        .then(queryUser => {
+        .populate({
+            path: 'posts',
+            model: 'Post',
+            options: {
+                sort: {
+                    creationDate: -1
+                }
+            },
+            populate: [{
+                path: 'comments',
+                model: 'Comment',
+                populate: {
+                    path: 'userId'
+                },
+                options: {
+                    sort: {
+                        creationDate: -1
+                    }
+                }
+            }, {
+                path: 'userId',
+                model: 'User'
+            }]
+        })
+        .exec((error, queryUser) => {
+
+            if (error) {
+                flashMessages.push({
+                    text: 'Error',
+                    ok: false
+                })
+
+                return res.json({ flashMessages })
+            }
 
             if (queryUser == null) {
                 flashMessages.push({ text: 'Esse Usuario não exite', ok: false })
                 return res.json({ flashMessages })
             }
 
-            db.Post.find({ userId: queryUser._id })
-                .sort({
-                    creationDate: -1
-                })
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId",
-                    },
-                    options: {
-                        sort: {
-                            creationDate: -1
-                        }
-                    }
-                })
-                .populate({
-                    path: "userId"
-                })
-                .then(query => {
+            flashMessages.push({
+                text: 'Listagem feita com sucesso',
+                ok: true
+            })
+            res.json({ flashMessages: flashMessages, query: queryUser.posts })
 
-                    if (query == null) {
-                        flashMessages.push({ text: 'Esse Usuario não exite', ok: false })
-                        return res.json({ flashMessages })
-                    }
-
-                    flashMessages.push({
-                        text: 'Listagem feita com sucesso',
-                        ok: true
-                    })
-
-                    res.json({ flashMessages, query })
-
-                })
-                .catch(error => {
-                    console.error(error)
-
-                    flashMessages.push({ text: 'Erro', ok: false })
-                    res.json({ flashMessages })
-                })
         })
-
 
 })
 
 // create comment
-router.post('/comment/:postId', autenticate, (req, res) => {
+router.post('/:username/post/:postId/comment', autenticate, (req, res) => {
     const flashMessages = []
 
-    if (req.body.content.length > 280) {
+    if (req.body.content.length > 100) {
         flashMessages.push({
             text: 'O comentario é muito longo',
             ok: false
@@ -373,7 +328,6 @@ router.post('/comment/:postId', autenticate, (req, res) => {
             .populate('comments')
             .then(query => {
                 flashMessages.push({
-
                     text: 'Comentario feito com sucesso',
                     ok: true
                 })
@@ -426,10 +380,8 @@ router.put('/user', autenticate, (req, res) => {
 
 })
 
-
-
 // follow
-router.put('/user/:username/follow', autenticate, (req, res) => {
+router.put('/:username/follow', autenticate, (req, res) => {
     const flashMessages = []
 
     // o que vai ser seguido
@@ -481,7 +433,7 @@ router.put('/user/:username/follow', autenticate, (req, res) => {
 
 })
 // unfollow
-router.put('/user/:username/unfollow', autenticate, (req, res) => {
+router.put('/:username/unfollow', autenticate, (req, res) => {
     const flashMessages = []
 
     db.User.findOne({ username: req.params.username }, (error, unFollowQuery) => {
@@ -531,60 +483,80 @@ router.put('/user/:username/unfollow', autenticate, (req, res) => {
 })
 
 // feed
-router.get('/feed', autenticate, (req, res) => {
-
+router.get('/user/feed', autenticate, (req, res) => {
     const flashMessages = []
 
-    db.User.findOne({ username: req.params.username }, (error, queryUser) => {
+    db.User
+        .find({ followers: { $in: res.locals.user._id } })
+        .distinct('_id')
+        .exec((error1, query1) => {
+            db.Post
+                .find({ userId: { $in: query1 } })
+                .populate([{
+                    path: 'comments',
+                    model: 'Comment',
+                    populate: {
+                        path: 'userId'
+                    },
+                    options: {
+                        sort: {
+                            creationDate: -1
+                        }
+                    }
+                }, {
+                    path: 'userId',
+                    model: 'User'
+                }])
+                .limit(10)
+                .sort({ creationDate: -1 })
+                .exec((error2, query2) => {
+
+                    if (error2) {
+                        flashMessages.push({
+                            text: 'Error',
+                            ok: false
+                        })
+                    }
+
+                    flashMessages.push({
+                        text: 'Listagem feita',
+                        ok: true
+                    })
+
+                    return res.json({ flashMessages: flashMessages, query: query2 })
+                })
+
+        })
+})
+
+// search user
+router.get('/:username', autenticate, (req, res) => {
+    const flashMessages = []
+
+    db.User.findOne({ username: req.params.username }, (error, query) => {
         if (error) {
-            console.error(error)
+            // console.error(error)
 
             flashMessages.push({ text: 'Erro', ok: false })
             res.json({ flashMessages })
         }
-        if (queryUser == null) {
-            flashMessages.push({ text: 'Esse Usuario não exite', ok: false })
+
+        if (query == null) {
+            flashMessages.push({ text: 'Usuario não encontrado', ok: false })
             return res.json({ flashMessages })
         }
 
-        db.Post.find({ userId: queryUser._id })
-            .sort({
-                creationDate: -1
-            })
-            .populate({
-                path: "comments",
-                populate: {
-                    path: "userId",
-                },
-                options: {
-                    sort: {
-                        creationDate: -1
-                    }
-                }
-            })
-            .populate({
-                path: "userId"
-            })
-            .then(query => {
+        flashMessages.push({
+            text: "Pesquisa feita com sucesso",
+            ok: true
+        })
 
-                if (query == null) {
-                    flashMessages.push({ text: 'Esse Usuario não exite', ok: false })
-                    return res.json({ flashMessages })
-                }
-
-                flashMessages.push({
-                    text: 'Listagem feita com sucesso',
-                    ok: true
-                })
-
-                res.json({ flashMessages, query })
-
-            })
+        res.json({
+            flashMessages: flashMessages,
+            content: query,
+            user: res.locals.user
+        })
     })
-
-
 })
-
-
 
 module.exports = router
