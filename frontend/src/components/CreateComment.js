@@ -10,51 +10,53 @@ import './CreateComment.css'
 
 function CreateComment(props) {
 
-    const [showCreateComment, setShowCreateComment] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const [postData] = useState(props.x)
+    const [showPopUp, setShowPopUp] = useState(false)
 
-    const showCreateCommentHandle = () => setShowCreateComment(true)
-    const hideCreateCommentHandle = () => {
-        setShowCreateComment(false)
+    const showCreateCommentHandle = () => setShowPopUp(true)
+    const hidePopUpHandle = () => {
+        setShowPopUp(false)
         props.refreshHandle()
     }
-    
-    const [flashMessages, setFlashMessages] = useState([])
-    
-    function PopUp(props) {
-        
-        function handleSubmit(event) {
-            event.preventDefault()
-            
-            setIsLoading(true)
-            
-            const req = {
-                content: event.target[0].value
-            }
 
-            Axios.post(`${process.env.REACT_APP_API_URL}/comment/${props.postId}`, req, { withCredentials: true })
+    function PopUp(props) {
+        const [flashMessages, setFlashMessages] = useState([])
+        const [isLoading, setIsLoading] = useState(false)
+        const [content, setContent] = useState('')
+
+        const onChangeHandle = (e) => {
+            setContent(e.target.value)
+        }
+
+        function handleSubmit(event) {
+            setIsLoading(true)
+
+            Axios.post(
+                    process.env.REACT_APP_API_URL + '/' +
+                    postData.userId.username + '/post/' + postData._id +
+                    '/comment', { content }, { withCredentials: true })
                 .then(res => {
                     setFlashMessages(res.data.flashMessages)
                     if (res.data.flashMessages[0].ok === true) {
-                        props.hideCreateCommentHandle()
-                    } else {
+                        props.hidePopUpHandle()
+                    }
+                    else {
                         setIsLoading(false)
                     }
                 })
         }
-        
 
         return (
             <div className="create-comment-popup">
             <div className="create-comment-popup-container">
-                <img className="create-comment-popup-exit-icon" alt="" src={ExitIcon} onClick={props.hideCreateCommentHandle}/>
+                <img className="create-comment-popup-exit-icon" alt="" src={ExitIcon} onClick={()=>{setShowPopUp(false)}}/>
                 <FlashMessages flashMessages={flashMessages}/>
-                <form className="create-comment-popup-form" id="postForm" onSubmit={handleSubmit}>
-                    <textarea className="create-comment-popup-textarea" form="postForm" id="story" name="story" rows="5" cols="33" placeholder="Escreva aqui seu comentário">
-                    </textarea>
-                    { isLoading ? <Loading/>
-                    : <input type="submit" className="create-comment-popup-submit" value="Comentar"/>}
-                </form>
+                <textarea className="create-comment-popup-textarea" 
+                    placeholder="Escreva aqui seu comentário" 
+                    onChange={onChangeHandle}>
+                </textarea>
+                { isLoading ? <Loading/>
+                : <input type="submit" onClick={handleSubmit} className="create-comment-popup-submit" value="Comentar"/>}
             </div>
         </div>
         )
@@ -62,7 +64,7 @@ function CreateComment(props) {
 
     return (
         <div>
-            {showCreateComment ? <PopUp postId={props.x._id} hideCreateCommentHandle={hideCreateCommentHandle}/> : ''}
+            {showPopUp ? <PopUp hidePopUpHandle={hidePopUpHandle}/> : ''}
             <input className="create-comment-new-comment" type="submit" value="Comentar" onClick={showCreateCommentHandle}/>
         </div>
     )

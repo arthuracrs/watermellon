@@ -23,29 +23,27 @@ function ListUserPost(props) {
 
     function LoadPosts() {
         
-        Axios.get(process.env.REACT_APP_API_URL + '/user/' + pathUsername + '/post', { withCredentials: true })
+        Axios.get(process.env.REACT_APP_API_URL + '/' + pathUsername + '/posts', { withCredentials: true })
             .then(res => {
                 if (res.data.flashMessages[0].ok === false) setFlashMessages(res.data.flashMessages)
                 if (res.data.flashMessages[0].ok === true) setPosts(res.data.query)
+                
                 setIsLoading(false)
             })
             .catch(error => console.error(error))
     }
 
     const abortSetStates = () => {
-        setIsLoading({})
-        setPosts({})
-        setFlashMessages({})
+        setIsLoading(true)
+        setPosts([])
+        setFlashMessages([])
     }
+
 
     useEffect(() => {
         LoadPosts()
         return abortSetStates
-    }, [])
-
-    useEffect(() => {
-        LoadPosts()
-    }, [refresh])
+    }, [pathUsername, refresh])
 
     function Content() {
         return (

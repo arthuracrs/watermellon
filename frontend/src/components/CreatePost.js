@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import Loading from './Loading'
 import FlashMessages from './FlashMessages'
@@ -9,46 +9,57 @@ import './CreatePost.css'
 
 function CreatePost(props) {
 
+
+
     const [showCreatePost, setShowCreatePost] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    
+
     const showCreatePostHandle = () => { setShowCreatePost(true) }
     const hideCreatePostHandle = () => { setShowCreatePost(false) }
 
     function PopUp(props) {
         const [flashMessages, setFlashMessages] = useState([])
+        const [content, setContent] = useState('')
+    
+        const onChangeHandle = (e) => {
+            setContent(e.target.value)
+        }
 
         function handleSubmit(event) {
             event.preventDefault()
             setIsLoading(true)
-            const req = {
-                content: event.target[0].value
-            }
 
-            Axios.post(`${process.env.REACT_APP_API_URL}/post`, req, { withCredentials: true })
+            Axios.post(`${process.env.REACT_APP_API_URL}/post`, {content}, { withCredentials: true })
                 .then(res => {
                     setFlashMessages(res.data.flashMessages)
 
                     if (res.data.flashMessages[0].ok === true) {
                         hideCreatePostHandle()
-                    } else {
+                    }
+                    else {
                         setIsLoading(false)
                     }
 
                 })
         }
+        const abortStateHandle = () => {
+            setFlashMessages({})
+            
+        }
 
+        useEffect(() => {
+            return abortStateHandle
+        }, [])
+        
         return (
             <div className="create-post">
             <div className="create-post-container">
                 <img className="exit-icon" alt="" src={ExitIcon} onClick={props.hideCreatePostHandle}/>
                 <FlashMessages flashMessages={flashMessages}/>
-                <form id="postForm" className="create-post-form" onSubmit={handleSubmit}>
-                    <textarea className="create-post-textarea" form="postForm" id="story" name="story" rows="5" cols="33" placeholder="Escreva aqui sua postagem">
+                    <textarea onChange={onChangeHandle} className="create-post-textarea" placeholder="Escreva aqui sua postagem">
                     </textarea>
                     { isLoading ? <Loading/>
-                    :<input type="submit" className="submit" value="Postar"/>}
-                </form>
+                    :<input onClick={handleSubmit} type="submit" className="submit" value="Postar"/>}
             </div>
         </div>
         )

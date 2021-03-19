@@ -36,18 +36,20 @@ function ListUsers() {
     function Content() {
         return (
             <div>
-            {users.map(x=>
-            <Link to={x.username} key={x._id} className="no-underline">
-                <div className="list-users-single-container">
-                    <img className="list-users-user-icon" alt="" src={UserIcon}/>
-                    <div className="list-users-user-info">
-                        <span className="list-users-single-username">
-                            {x.username}
-                        </span> 
-                    </div>
-                </div>
-            </Link>
-            )}
+                <h3>Outros Usuarios:</h3>
+                {users.map(x=>
+                    <Link to={x.username} key={x._id} className="no-underline">
+                        <div className="list-users-single-container">
+                        
+                            <img className="list-users-user-icon" alt="" src={UserIcon}/>
+                            <div className="list-users-user-info">
+                                <span className="list-users-single-username">
+                                    {x.username}
+                                </span> 
+                            </div>
+                        </div>
+                    </Link>
+                )}
         </div>
         )
     }

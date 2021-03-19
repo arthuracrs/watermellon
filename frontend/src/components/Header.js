@@ -16,7 +16,7 @@ function Header(props) {
             <NavLink  exact to="/" activeClassName="selected" className="header-home-link">
                 <p> Home</p>
             </NavLink >
-            <NavLink  to={"/" + props.loggedUser} className="header-home-link" activeClassName="selected" >
+            <NavLink  to={"/" + props.loggedUser.username} className="header-home-link" activeClassName="selected" >
                 <p>Perfil</p>
             </NavLink >
             <LogoutButton/>

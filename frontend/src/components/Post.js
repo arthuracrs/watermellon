@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import Comment from './Comment.js'
+import { Link } from 'react-router-dom'
 
+import Comment from './Comment.js'
 import CreateComment from './CreateComment'
 
 import UserIcon from '../assets/user-icon.png'
@@ -35,7 +36,7 @@ function Post(props) {
                     <img className="post-user-icon" alt="" src={UserIcon}/>
                 </div>
                 <div className="post-info-container-2">
-                    <span className="post-username">{props.x.userId.username}</span>
+                    <Link to={"/"+ props.x.userId.username} className="no-underline post-username-link"><span className="post-username">{props.x.userId.username}</span></Link>
                     <span className="post-text">{props.x.content}</span>
                 </div>
             </div>
@@ -44,7 +45,6 @@ function Post(props) {
                 <div className="comments-title-container">
                     <h4 className="comments-title">Comentarios: {props.x.comments.length}</h4>
                 </div>
-                
                 {props.x.comments.slice(0, commentsNumberLimit).map(x=><Comment key={x._id} x={x}/>)}
                 {props.x.comments.length > 2 ? <ShowMoreComments setCommentsNumberLimit={setCommentsNumberLimit}/> : '' }
             </div>

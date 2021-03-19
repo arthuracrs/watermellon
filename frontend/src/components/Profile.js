@@ -14,18 +14,20 @@ import './Profile.css'
 
 function Profile(props) {
 
-    let { pathUsername } = useParams();
-
     function ProfileHeader() {
+        const { pathUsername } = useParams();
+
         const [userProfile, setUserProfile] = useState({})
         const [isLoading, setIsLoading] = useState(true)
+        const [loggedUser, setLoggedUser] = useState(props.loggedUser)
         const [refresh, setRefresh] = useState(true)
         const handleRefresh = () => { setRefresh(!refresh) }
 
         function LoadProfile() {
-            Axios.get(process.env.REACT_APP_API_URL + "/user/" + pathUsername, { withCredentials: true })
+            Axios.get(process.env.REACT_APP_API_URL + "/" + pathUsername, { withCredentials: true })
                 .then(res => {
                     if (res.data.flashMessages[0].ok === true) {
+                        setLoggedUser(res.data.user)
                         setUserProfile(res.data.content)
                         setIsLoading(false)
                     }
@@ -34,12 +36,16 @@ function Profile(props) {
 
         const abortSetStates = () => {
             setUserProfile({})
-            setIsLoading({})
+            setIsLoading(false)
         }
+
+        useEffect(()=>{
+            LoadProfile()
+            return abortSetStates
+        }, [])
 
         useEffect(() => {
             LoadProfile()
-            return abortSetStates
         }, [pathUsername, refresh])
 
         function Content() {
@@ -48,9 +54,9 @@ function Profile(props) {
                     <div className="profile-header">
                         <img className="profile-user-header-banner" alt="" src={ProfileBanner}/>
                         <img className="profile-user-icon" alt="" src={UserIcon}/>
-                        { props.loggedUser === pathUsername ? 
+                        { loggedUser.username === pathUsername ? 
                         <EditProfile handleRefresh={handleRefresh} userProfile={userProfile} className="profile-edit-profile-button-invoker"/> 
-                        : <Follow/>}
+                        : <Follow loggedUser={loggedUser} userProfile={userProfile}/>}
                     </div>
                     <div className="profile-user-info">
                         <h3>{pathUsername}</h3>
@@ -62,8 +68,6 @@ function Profile(props) {
         return (<div>{isLoading ? <Loading/> : <Content/>}</div>)
 
     }
-
-
 
     return (
         <div className="profile-page">

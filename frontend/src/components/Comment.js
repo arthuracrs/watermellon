@@ -4,6 +4,7 @@ import UserIcon from '../assets/user-icon.png'
 import './Comment.css'
 
 function Comment(props){
+    
     return (
         <div className="comment">
             <img className="comment-user-icon" alt="" src={UserIcon}/>

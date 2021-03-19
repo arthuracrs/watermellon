@@ -11,13 +11,13 @@ function Follow(props) {
 
     const followHandle = () => {
         setFollowing(true)
-        Axios.put(process.env.REACT_APP_API_URL + '/user/' + pathUsername + '/follow', {},{ withCredentials: true })
+        Axios.put(process.env.REACT_APP_API_URL + '/' + pathUsername + '/follow', {},{ withCredentials: true })
             .then(res => {
             })
     }
     const unFollowHandle = () => {
         setFollowing(false)
-        Axios.put(process.env.REACT_APP_API_URL + '/user/' + pathUsername + '/unfollow', {},{ withCredentials: true })
+        Axios.put(process.env.REACT_APP_API_URL + '/' + pathUsername + '/unfollow', {},{ withCredentials: true })
             .then(res => {
             })
     }
