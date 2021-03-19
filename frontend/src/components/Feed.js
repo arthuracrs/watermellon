@@ -22,8 +22,8 @@ function Feed(props) {
     let { pathUsername } = useParams();
 
     function LoadPosts() {
-        
-        Axios.get(process.env.REACT_APP_API_URL + '/feed', { withCredentials: true })
+
+        Axios.get(process.env.REACT_APP_API_URL + '/user/feed', { withCredentials: true })
             .then(res => {
                 if (res.data.flashMessages[0].ok === false) setFlashMessages(res.data.flashMessages)
                 if (res.data.flashMessages[0].ok === true) setPosts(res.data.query)
@@ -40,20 +40,17 @@ function Feed(props) {
 
     useEffect(() => {
         LoadPosts()
-        return abortSetStates
-    }, [])
-
-    useEffect(() => {
-        LoadPosts()
     }, [refresh])
+
+
 
     function Content() {
         return (
             <div className="user-post-list">
                 <div className="user-post-list-title-container">
-                    <h3 className="user-post-list-title">{posts.length} Posts</h3>
-                    <FlashMessages flashMessages={flashMessages} />
-                    {posts.map(x=><Post refreshHandle={refreshHandle} key={x._id} x={x} />)}
+                    <h3 className="user-post-list-title">Feed</h3>
+                    <FlashMessages flashMessages={ flashMessages }/> 
+                    { posts.map(x => <Post refreshHandle={refreshHandle} key={x._id} x={x} />) } 
                 </div>
             </div>
         )
