@@ -4,11 +4,15 @@
 }
 
 .dashboard-main {
-    flex: 80%;
+    flex: 60%;
     border-right: 1px solid rgba(0,0,0, .4)
 }
 
 .dashboard-header {
+    flex: 20%;
+}
+
+.dashboard-secondary {
     flex: 20%;
 }
 
@@ -27,5 +31,10 @@
     
     .dashboard-main{
         padding-bottom: 10%;
+        border-right: 0
+    }
+    
+    .dashboard-secondary{
+        display: none
     }
 }
