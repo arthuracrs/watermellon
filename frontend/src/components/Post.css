@@ -33,6 +33,11 @@
     font-size: 13pt;
     margin-bottom: 10px
 }
+
+.post-username-link{
+    color: black    
+}
+
 .post-text{
     font-size: 13pt;
     font-weight: bold;
