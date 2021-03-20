@@ -12,6 +12,7 @@ import Header from '../components/Header'
 import CreatePost from '../components/CreatePost'
 import Profile from '../components/Profile'
 import Feed from '../components/Feed'
+import SearchUser from '../components/SearchUser'
 
 import './Dashboard.css'
 
@@ -43,7 +44,7 @@ function Dashboard() {
                         </Switch>
                     </div>
                     <div className="dashboard-secondary">
-                        <ListUsers/>
+                        <SearchUser/>
                     </div>
                 </div>
             </Router>
