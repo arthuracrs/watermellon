@@ -8,6 +8,7 @@
     width: 100vw;
     top: 0;
     left: 0;
+    z-index: 2
 }
 
 .create-comment-popup-container {
@@ -56,6 +57,7 @@
     text-align: center;
     padding: 10px;
     color: white;
+    outline: none;
     margin: 10px 0;
     background-color: #FF1744
 }

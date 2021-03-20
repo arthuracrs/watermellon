@@ -4,7 +4,7 @@
 }
 
 .dashboard-main {
-    flex: 60%;
+    flex: 55%;
     border-right: 1px solid rgba(0,0,0, .4)
 }
 
@@ -13,7 +13,7 @@
 }
 
 .dashboard-secondary {
-    flex: 20%;
+    flex: 25%;
 }
 
 @media only screen and (max-width: 600px) {

@@ -1,0 +1,74 @@
+.search-user-container{
+    padding-top: 10px;
+    position: sticky;
+    top:0;
+}
+
+.search-user{
+    background-color: #FF1744;
+    border-radius: 5px;
+    padding: 10px 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 5%;
+    margin-top: 0
+}
+
+.search-user-tittle{
+    font-family: sans-serif;
+    font-size: 13pt;
+    font-weight: bold;
+    padding-bottom: 10px;
+    text-align: center
+}
+
+.search-user-input {
+    font-size: 14pt;
+    font-family: sans-serif;
+    border-radius: 5px;
+    padding: 10px;
+    outline: 0;
+    color: rgba(256,256,256, .95);
+    box-shadow: inset 0px 0px 4px rgba(215, 44, 44, 0.2);
+    background-color: #AA0F2D
+}
+
+.search-user-input::placeholder{
+    color: rgba(256,256,256, .8);
+}
+
+
+
+
+.search-users-single-container {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid rgba(256, 256, 256, 1);
+    padding: 10px;
+}
+
+.search-users-single-container:hover {
+    cursor: pointer
+}
+
+.search-users-user-icon {
+    width: 50px;
+    border: 2px solid rgba(256, 256, 256, 0.9);
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.search-users-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-users-single-username {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+.search-user-none-found{
+    margin: 10px auto
+}
