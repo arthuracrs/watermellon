@@ -1,4 +1,6 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+
 import UserIcon from '../assets/user-icon.png'
 
 import './Comment.css'
@@ -9,7 +11,7 @@ function Comment(props){
         <div className="comment">
             <img className="comment-user-icon" alt="" src={UserIcon}/>
             <div className="comment-info">
-                <p className="">{props.x.userId.username}</p>
+                <Link className="comment-username-link"  to={"/"+ props.x.userId.username}><p className="comment-username">{props.x.userId.username}</p></Link>
                 <span className="comment-text">{props.x.content}</span>
             </div>
         </div>
