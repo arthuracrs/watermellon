@@ -67,9 +67,9 @@ function CreatePost(props) {
     }
 
     return (
-        <div>
+        <div className="create-post-oaa">
             {showCreatePost ? <PopUp hideCreatePostHandle={hideCreatePostHandle}/> : ''}
-            <div className="create-post-invoke-button-container">
+            <div className="create-post-ghost">
                 <input type="submit" className="create-post-new-post" onClick={showCreatePostHandle} value="Criar Post"/>
             </div>
         </div>

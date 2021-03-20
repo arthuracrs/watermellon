@@ -16,6 +16,7 @@ function SearchUser() {
     }, 500)
 
     function onChangeHandle(e) {
+
         if (e.target.value == "") setQuery([])
         Axios.get(process.env.REACT_APP_API_URL + '/search/' + e.target.value, { withCredentials: true })
             .then(res => {

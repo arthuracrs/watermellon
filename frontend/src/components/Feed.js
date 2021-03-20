@@ -50,7 +50,10 @@ function Feed(props) {
                 <div className="user-post-list-title-container">
                     <h3 className="user-post-list-title">Feed</h3>
                     <FlashMessages flashMessages={ flashMessages }/> 
-                    { posts.map(x => <Post refreshHandle={refreshHandle} key={x._id} x={x} />) } 
+                    { posts.length == 0 ? 
+                         <span className="user-post-list-none-post">Você deveria seguir alguns perfis</span>
+                         : posts.map(x => <Post refreshHandle={refreshHandle} key={x._id} x={x} />) 
+                    } 
                 </div>
             </div>
         )
