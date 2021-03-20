@@ -9,13 +9,14 @@ import './CreatePost.css'
 
 function CreatePost(props) {
 
-
-
     const [showCreatePost, setShowCreatePost] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const showCreatePostHandle = () => { setShowCreatePost(true) }
-    const hideCreatePostHandle = () => { setShowCreatePost(false) }
+    const hideCreatePostHandle = () => { 
+        setIsLoading(false)
+        setShowCreatePost(false) 
+    }
 
     function PopUp(props) {
         const [flashMessages, setFlashMessages] = useState([])
