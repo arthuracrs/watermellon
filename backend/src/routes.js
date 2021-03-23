@@ -1,8 +1,9 @@
+require('dotenv').config()
+
 const express = require('express')
 const db = require("./models.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const dotenv = require('dotenv').config()
 
 const router = express.Router()
 
@@ -534,7 +535,7 @@ router.get('/search/:username', autenticate, (req, res) => {
     const flashMessages = []
 
     db.User.find({ username: { $regex: req.params.username, $ne: res.locals.user.username } }, 'username')
-        .limit(5)
+        .limit(10)
         .exec((error, query) => {
             if (error) {
                 console.error(error)
