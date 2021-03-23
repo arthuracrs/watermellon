@@ -28,6 +28,12 @@
     text-decoration: none
 }
 
+
+.comment-username-link:link{
+    color: #FF1744    
+}
+
+
 .comment-text{
     font-size: 11pt;
     word-wrap: break-word !important; 
