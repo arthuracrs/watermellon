@@ -40,7 +40,9 @@ const userSchema = new mongoose.Schema({
     posts:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
-    }]
+    }],
+    banner: String,
+    avatar: String
 })
 
 const commentSchema = new mongoose.Schema({

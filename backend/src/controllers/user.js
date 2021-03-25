@@ -1,6 +1,8 @@
 const db = require("../models.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const aws = require("aws-sdk")
+const crypto = require('crypto')
 
 module.exports = {
     create: (req, res) => {
@@ -80,8 +82,10 @@ module.exports = {
             })
         })
     },
-    update: (req, res) => {
+    update: async(req, res) => {
         const flashMessages = []
+
+        const upload = {}
 
         if (req.body.bio && req.body.bio.length > 100) {
             flashMessages.push({
@@ -92,7 +96,33 @@ module.exports = {
             return res.json({ flashMessages })
         }
 
-        db.User.updateOne({ username: res.locals.user.username }, req.body, { useFindAndModify: false, upsert: true },
+        if (req.files) {
+            const s3Client = new aws.S3()
+
+            for (let field in req.files) {
+
+                const { originalname, mimetype } = req.files[field][0]
+
+                const hash = await crypto.randomBytes(13).toString('hex')
+
+                const obj = await s3Client.upload({
+                    Bucket: 'watermellon',
+                    ACL: 'public-read',
+                    ContentType: mimetype,
+                    Key: hash + originalname,
+                    Body: req.files[field][0].buffer
+                }).promise()
+                
+                upload[field] = obj.Location
+            }
+
+        }
+
+        if(req.body.bio){
+            upload.bio = req.body.bio
+        }
+
+        db.User.updateOne({ username: res.locals.user.username }, upload, { useFindAndModify: false, upsert: true },
             (error, query) => {
                 if (error) {
                     console.error(error)

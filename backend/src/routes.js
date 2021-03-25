@@ -4,9 +4,11 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const dotenv = require('dotenv').config()
 
+
 const router = express.Router()
 
-const autenticate = require("./config/authenticate")
+const multer = require("./config/multer")
+const authenticate = require("./config/authenticate")
 
 const authController = require("./controllers/auth")
 const logoutController = require("./controllers/logout")
@@ -19,7 +21,7 @@ const followController = require("./controllers/follow")
 const feedController = require("./controllers/feed")
 const searchUser = require("./controllers/searchUser")
 
-router.post('/auth', autenticate, authController)
+router.post('/auth', authenticate, authController)
 
 router.get('/', (req, res) => {
 
@@ -34,31 +36,31 @@ router.post('/login', loginController)
 // create user
 router.post('/user', userController.create)
 
+// update user
+router.put('/user', authenticate, multer.updateUser, userController.update)
+
 // create post
-router.post('/post', autenticate, postController.create)
+router.post('/post', authenticate, postController.create)
 
 // list user's posts
-router.get('/:username/posts', autenticate, listPostsController)
+router.get('/:username/posts', authenticate, listPostsController)
 
 // create comment
-router.post('/:username/post/:postId/comment', autenticate, commentController.create)
-
-// update user
-router.put('/user', autenticate, userController.update)
+router.post('/:username/post/:postId/comment', authenticate, commentController.create)
 
 // follow
-router.put('/:username/follow', autenticate, followController.create)
+router.put('/:username/follow', authenticate, followController.create)
 
 // unfollow
-router.put('/:username/unfollow', autenticate, followController.destroy)
+router.put('/:username/unfollow', authenticate, followController.destroy)
 
 // feed
-router.get('/user/feed', autenticate, feedController)
+router.get('/user/feed', authenticate, feedController)
 
 // parsial search user
-router.get('/search/:username', autenticate, searchUser)
+router.get('/search/:username', authenticate, searchUser)
 
 // get user
-router.get('/:username', autenticate, userController.read)
+router.get('/:username', authenticate, userController.read)
 
 module.exports = router
