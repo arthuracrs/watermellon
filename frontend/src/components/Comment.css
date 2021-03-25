@@ -25,7 +25,8 @@
 }
     
 .comment-username-link{
-    text-decoration: none
+    text-decoration: none;
+    color: #FF1744
 }
 
 .comment-text{
