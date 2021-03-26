@@ -1,0 +1,7 @@
+
+.cropper-container{
+  width: 100%;
+  max-width: 550px;
+  display: grid;
+  place-items: center
+}
