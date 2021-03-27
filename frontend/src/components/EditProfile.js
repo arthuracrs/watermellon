@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDebouncedCallback } from 'use-debounce';
 import Axios from 'axios'
 
@@ -37,7 +37,6 @@ function EditProfile(props) {
             setIsLoading(true)
 
             const formData = new FormData();
-            console.log(uploadBody.avatar)
 
             const blobCallBack = (type) => {
                 return new Promise((resolve, reject) => {
@@ -98,7 +97,11 @@ function EditProfile(props) {
                                     setMyEditorOptions({
                                         type: "banner",
                                         setImageOutput: setImageOutput,
-                                        imageInput: ProfileBanner,
+                                        imageInput: 
+                                            uploadBody.banner && uploadBody.banner.toDataURL()
+                                            || userProfile.banner
+                                            || ProfileBanner 
+                                        ,
                                         setShowMyEditor: setShowMyEditor
                                     })
                                     showMyEditorHandle() 
@@ -107,7 +110,11 @@ function EditProfile(props) {
                                 <img 
                                     className="profile1-user-header-banner-img" 
                                     alt="" 
-                                    src={ uploadBody.banner ? uploadBody.banner.toDataURL() : ProfileBanner }
+                                    src={ 
+                                        uploadBody.banner && uploadBody.banner.toDataURL()
+                                        || userProfile.banner
+                                        || ProfileBanner 
+                                    }
                                 />
                                 <div className="profile1-user-header-banner-msg">
                                     <span>alterar imagem</span>
@@ -119,7 +126,11 @@ function EditProfile(props) {
                                     setMyEditorOptions({
                                         type: "avatar",
                                         setImageOutput: setImageOutput,
-                                        imageInput: UserIcon,
+                                        imageInput: 
+                                            uploadBody.avatar && uploadBody.avatar.toDataURL()
+                                            || userProfile.avatar
+                                            || UserIcon
+                                            ,
                                         setShowMyEditor: setShowMyEditor
                                     })
                                     showMyEditorHandle() 
@@ -128,7 +139,11 @@ function EditProfile(props) {
                                     <img 
                                         className="profile1-user-header-avatar-img" 
                                         alt="" 
-                                        src={ uploadBody.avatar ? uploadBody.avatar.toDataURL() : UserIcon}
+                                        src={ 
+                                            uploadBody.avatar && uploadBody.avatar.toDataURL()
+                                            || userProfile.avatar
+                                            || UserIcon
+                                            }
                                     />
                                     <div className="profile1-user-header-avatar-msg">
                                         <span>alterar imagem</span>

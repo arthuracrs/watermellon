@@ -29,6 +29,7 @@ function Profile(props) {
                     if (res.data.flashMessages[0].ok === true) {
                         setLoggedUser(res.data.user)
                         setUserProfile(res.data.content)
+                        console.log(res.data.content)
                         setIsLoading(false)
                     }
                 })
@@ -52,8 +53,8 @@ function Profile(props) {
             return (
                 <div className="profile">
                     <div className="profile-header">
-                        <img className="profile-user-header-banner" alt="" src={ProfileBanner}/>
-                        <img className="profile-user-icon" alt="" src={UserIcon}/>
+                        <img className="profile-user-header-banner" alt="" src={userProfile.banner ? userProfile.banner : ProfileBanner}/>
+                        <img className="profile-user-icon" alt="" src={ userProfile.avatar ? userProfile.avatar : UserIcon}/>
                         { loggedUser.username === pathUsername ? 
                         <EditProfile handleRefresh={handleRefresh} userProfile={userProfile} className="profile-edit-profile-button-invoker"/> 
                         : <Follow loggedUser={loggedUser} userProfile={userProfile}/>}

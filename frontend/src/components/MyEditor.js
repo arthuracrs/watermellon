@@ -57,6 +57,7 @@ function MyEditor(props) {
             viewMode={1}
             guides={false}
             dragMode="move"
+            checkCrossOrigin={true}
             background={false}
             responsive={true}
             checkOrientation={false} 
