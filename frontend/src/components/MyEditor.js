@@ -5,10 +5,14 @@ import "cropperjs/dist/cropper.css";
 import "./MyEditor.css";
 
 function MyEditor(props) {
-  const [image, setImage] = useState(props.banner)
-  const [zoom, setZoom] = useState(1)
-  const [cropData, setCropData] = useState("");
+  const [type] = useState(props.type)
+  
+  const [image, setImage] = useState(props.imageInput)
   const [cropper, setCropper] = useState();
+  const [ratio] = useState({
+    banner: 3 / 1,
+    avatar: 1
+  })
   
   const onChange = (e) => {
     e.preventDefault();
@@ -28,8 +32,7 @@ function MyEditor(props) {
 
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
-      setCropData(cropper.getCroppedCanvas().toDataURL());
-      props.setImageBanner(cropper.getCroppedCanvas().toDataURL())
+      props.setImageOutput(cropper.getCroppedCanvas(), type)
     }
   };
 
@@ -38,39 +41,43 @@ function MyEditor(props) {
   }
 
   return (
-    <div>
-        <input type="file" onChange={onChange} />
-        <input type="submit" onClick={getCropData} value="salvar" />
-        <input type="submit" onClick={()=>{props.setShowMyEditor(false)}} value="fechar" />
-        <input
-          type="range"
-          onChange={changeZoom}
-          min='1'
-          max="2"
-          step="0.01"
-          defaultValue="1"
-        />
+    <div className="my-editor">
         <div className="cropper-container">
           <Cropper
-            style={{ minHeight: '400px', height: 'auto', width: "auto", margin: '0 auto' }}
-            aspectRatio={3 / 1}
+            style={{ height: '380px', width: "100%", margin: '0 auto' }}
+            aspectRatio={ratio[type]}
             cropBoxResizable={false}
             cropBoxMovable={false}
             movable={true}
             autoCrop={true}
             autoCropArea={1}
+            zoomOnTouch={false}
+            zoomOnWheel={false}
             src={image}
-            viewMode={2}
+            viewMode={1}
             guides={false}
             dragMode="move"
             background={false}
             responsive={true}
-            checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+            checkOrientation={false} 
             onInitialized={(instance) => {
               setCropper(instance);
             }}
           />
       </div>
+      <div className="cropper-controllers">
+          <input type="file" onChange={onChange} />
+          <input type="submit" onClick={getCropData} value="salvar" />
+          <input type="submit" onClick={()=>{props.setShowMyEditor(false)}} value="fechar" />
+          <input
+            type="range"
+            onChange={changeZoom}
+            min='1'
+            max="2"
+            step="0.01"
+            defaultValue="1"
+          />
+        </div>
     </div>
   )
 }

@@ -86,7 +86,7 @@ module.exports = {
         const flashMessages = []
 
         const upload = {}
-
+        
         if (req.body.bio && req.body.bio.length > 100) {
             flashMessages.push({
                 text: 'Sua bio é muito longa',
@@ -112,13 +112,13 @@ module.exports = {
                     Key: hash + originalname,
                     Body: req.files[field][0].buffer
                 }).promise()
-                
+
                 upload[field] = obj.Location
             }
 
         }
 
-        if(req.body.bio){
+        if (req.body.bio) {
             upload.bio = req.body.bio
         }
 
@@ -139,5 +139,5 @@ module.exports = {
                 return res.json({ flashMessages })
             })
 
-    }
+        }
 }

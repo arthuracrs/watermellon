@@ -74,13 +74,13 @@
     text-align: center;
 }
 
-.edit-profile-popup-body{
+.edit-profile-popup-body {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-.profile1-container{
+.profile1-container {
     position: relative;
     height: 100%;
     display: flex;
@@ -88,7 +88,7 @@
     justify-content: space-between;
 }
 
-.profile1-header{
+.profile1-header {
     position: relative;
     padding-bottom: 10%;
     margin-bottom: 20px;
@@ -96,32 +96,79 @@
     flex-direction: column;
 }
 
-.profile1-user-header-banner{
-    width: 100%
+.profile1-user-header-banner {
+    width: 100%;
+    position: relative;
+    display: grid;
+    place-items: center;
 }
 
-.profile1-user-icon{
+.profile1-user-header-banner-msg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .3);
+    color: white;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    text-shadow: 0 0 10px black;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.profile1-user-header-banner-img {
+    width: 100%;
+}
+
+.profile1-user-header-avatar {
     position: absolute;
     background-color: lightgray;
-    border-radius: 100%;
-    border: 5px solid white;
     margin: 10px 10px 0 10px;
     bottom: 0;
     left: 0;
     width: 20%;
+    border-radius: 100%;
+    border: 5px solid white;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
 }
 
-.profile1-user-info{
+.profile1-user-header-avatar-img {
+    width: 100%
+}
+
+.profile1-user-header-avatar-msg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .3);
+    color: white;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    text-shadow: 0 0 10px black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.profile1-user-info {
     margin: 0 8%;
     margin-bottom: 30px
 }
 
-.profile1-edit-profile-button-invoker{
+.profile1-edit-profile-button-invoker {
     align-self: flex-end;
-    
+
 }
 
-.edit-profile1-bio{
+.edit-profile1-bio {
     font-size: 15pt;
     width: 100%;
     resize: none;
@@ -132,6 +179,6 @@
     border-radius: 5px;
 }
 
-.faker{
+.faker {
     opacity: 1
 }

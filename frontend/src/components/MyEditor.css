@@ -1,7 +1,37 @@
+.my-editor {
+  background-color: #800C22;
+}
 
-.cropper-container{
+.cropper-controllers {
+  background-color: white;
   width: 100%;
-  max-width: 550px;
+  padding: 10px 10px 0 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cropper-container {
+  width: auto;
+  height: 380px;
   display: grid;
   place-items: center
+}
+
+.cropper-center {
+  display: none
+}
+
+.cropper-view-box {
+  outline: 1px solid #FF1744;
+  outline-color: #FF1744
+}
+
+.cropper-modal {
+  background-color: #800C22;
+  opacity: 0.5;
+}
+
+.cropper-drag-box {
+  background-color: #800C22;
+  opacity: .5
 }

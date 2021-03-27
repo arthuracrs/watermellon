@@ -27,23 +27,37 @@ function EditProfile(props) {
         const [userProfile] = useState(props.userProfile)
         const [isLoading, setIsLoading] = useState(false)
 
-        const [bio, setBio] = useState()
-        const [avatar, setAvatar] = useState(UserIcon)
-        const [banner, setBanner] = useState(ProfileBanner)
+        const [uploadBody, setUploadBody] = useState({})
 
+        const [myEditorOptions, setMyEditorOptions] = useState({})
         const [showMyEditor, setShowMyEditor] = useState(false)
 
-        function updateHandle(e) {
+        const updateHandle = async(e) => {
             setFlashMessages([])
             setIsLoading(true)
 
-            let body = {}
+            const formData = new FormData();
+            console.log(uploadBody.avatar)
 
-            if (avatar) body.avatar = avatar
-            if (banner) body.banner = banner
-            if (bio) body.bio = bio
+            const blobCallBack = (type) => {
+                return new Promise((resolve, reject) => {
+                    uploadBody[type].toBlob((blob) => {
+                        resolve(blob)
+                    })
+                })
+            }
 
-            Axios.put(process.env.REACT_APP_API_URL + '/user', body, { withCredentials: true })
+            if (uploadBody.avatar) {
+                const blob = await blobCallBack('avatar')
+                formData.append('avatar', blob)
+            }
+            if (uploadBody.banner) {
+                const blob = await blobCallBack('banner')
+                formData.append('banner', blob)
+            }
+            if (uploadBody.bio) formData.append('bio', uploadBody.bio)
+
+            Axios.put(process.env.REACT_APP_API_URL + '/user', formData, { withCredentials: true })
                 .then(res => {
                     setChanged(true)
                     setIsLoading(false)
@@ -53,27 +67,73 @@ function EditProfile(props) {
 
         const debounced = useDebouncedCallback(
             // function
-            (e) => { setBio(e.target.value) },
+            (e) => {
+                let temp = uploadBody
+                temp.bio = e.target.value
+                setUploadBody(temp)
+            },
             // delay in ms
             1000
         );
 
-        const setImageBanner = (url)=>{
-            setBanner(url)
+        const setImageOutput = (croppedCavas, type) => {
+            let temp = uploadBody
+            temp[type] = croppedCavas
+            setUploadBody(temp)
         }
 
-        function FakeProfile(props){
-            
-            useEffect(()=>{
-                console.log(banner)
-            }, [])
-            
-            return(
+        const showMyEditorHandle = () => {
+            setShowMyEditor(true)
+        }
+
+        function FakeProfile(props) {
+
+            return (
                 <div className="profile1-container">
                     <div className="profile1">
                         <div className="profile1-header">
-                            <img className="profile1-user-header-banner" alt="" src={banner}/>
-                            <img onClick={()=>{props.setShowMyEditor(true)}} className="profile1-user-icon" alt="" src={avatar}/>
+                            <div 
+                                className="profile1-user-header-banner"
+                                onClick={()=>{ 
+                                    setMyEditorOptions({
+                                        type: "banner",
+                                        setImageOutput: setImageOutput,
+                                        imageInput: ProfileBanner,
+                                        setShowMyEditor: setShowMyEditor
+                                    })
+                                    showMyEditorHandle() 
+                                }} 
+                            >
+                                <img 
+                                    className="profile1-user-header-banner-img" 
+                                    alt="" 
+                                    src={ uploadBody.banner ? uploadBody.banner.toDataURL() : ProfileBanner }
+                                />
+                                <div className="profile1-user-header-banner-msg">
+                                    <span>alterar imagem</span>
+                                </div>
+                            </div>
+                            <div 
+                                className="profile1-user-header-avatar" 
+                                onClick={()=>{ 
+                                    setMyEditorOptions({
+                                        type: "avatar",
+                                        setImageOutput: setImageOutput,
+                                        imageInput: UserIcon,
+                                        setShowMyEditor: setShowMyEditor
+                                    })
+                                    showMyEditorHandle() 
+                                }}
+                                >
+                                    <img 
+                                        className="profile1-user-header-avatar-img" 
+                                        alt="" 
+                                        src={ uploadBody.avatar ? uploadBody.avatar.toDataURL() : UserIcon}
+                                    />
+                                    <div className="profile1-user-header-avatar-msg">
+                                        <span>alterar imagem</span>
+                                    </div>
+                            </div>
                         </div>
                         <div className="profile1-user-info">
                             <h3>{userProfile.username}</h3>
@@ -85,7 +145,7 @@ function EditProfile(props) {
                             </textarea>
                         </div>
                     </div>
-                </div>   
+                </div>
             )
         }
 
@@ -93,6 +153,7 @@ function EditProfile(props) {
             <div className="edit-profile-popup">
                 <div className="edit-profile-popup-container">
                     <div className="edit-profile-popup-header">
+                        <input type="submit"  onClick={updateHandle} />
                         <div className="edit-profile-popup-header-div-1">
                             {flashMessages.length !== 0 || isLoading ?
                             '' : <h3 className="edit-profile-popup-header-div-1-title">Edite Seu Perfil</h3>}
@@ -102,7 +163,10 @@ function EditProfile(props) {
                         <img className="edit-profile-popup-exit-icon" alt="" src={ExitIcon} onClick={changed ? props.hidePopUpHandle : ()=>{setShowPopUp(false)}}/>
                     </div>
                     <div className="edit-profile-popup-body">
-                        {showMyEditor && <MyEditor setImageBanner={setImageBanner} banner={banner} setShowMyEditor={setShowMyEditor} />}
+                        {showMyEditor && 
+                        <MyEditor 
+                             {...myEditorOptions}
+                        />}
                         {showMyEditor ? '' : <FakeProfile setShowMyEditor={setShowMyEditor}/>}
                     </div>    
                 </div>
