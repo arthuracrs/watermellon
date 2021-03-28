@@ -6,37 +6,33 @@ import "./MyEditor.css";
 
 function MyEditor(props) {
   const [type] = useState(props.type)
-  
-  const [image, setImage] = useState(props.imageInput)
+
+  const [image] = useState(props.imageInput)
   const [cropper, setCropper] = useState();
+  const [resolution] = useState({
+    banner:{
+      width: 600,
+      height: 200
+    },
+    avatar:{
+      width: 400,
+      height: 400
+    }
+  })
+
   const [ratio] = useState({
     banner: 3 / 1,
     avatar: 1
   })
-  
-  const onChange = (e) => {
-    e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    }
-    else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(files[0]);
-  };
 
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
-      props.setImageOutput(cropper.getCroppedCanvas(), type)
+      props.setImageOutput(cropper.getCroppedCanvas(resolution[type]), type)
+      props.setShowMyEditor(false)
     }
   };
 
-  const changeZoom = (e)=>{
+  const changeZoom = (e) => {
     cropper.scale(e.target.value, e.target.value)
   }
 
@@ -67,10 +63,9 @@ function MyEditor(props) {
           />
       </div>
       <div className="cropper-controllers">
-          <input type="file" onChange={onChange} />
-          <input type="submit" onClick={getCropData} value="salvar" />
-          <input type="submit" onClick={()=>{props.setShowMyEditor(false)}} value="fechar" />
+          <input className="cropper-controllers-save" type="submit" onClick={getCropData} value="salvar" />
           <input
+            className="cropper-controllers-slider"
             type="range"
             onChange={changeZoom}
             min='1'

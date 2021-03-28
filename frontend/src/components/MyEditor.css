@@ -1,24 +1,50 @@
 .my-editor {
   background-color: #800C22;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cropper-controllers {
   background-color: white;
   width: 100%;
-  padding: 10px 10px 0 10px;
+  padding: 10px;
   display: flex;
   justify-content: space-evenly;
+  flex: 1;
+}
+
+.cropper-controllers-slider{
+  width: 70%;
+  cursor: pointer
+}
+
+.cropper-controllers-save {
+  font-size: 12pt;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px;
+  color: white;
+  margin: 5px 0;
+  background-color: #FF1744;
+  cursor: pointer
 }
 
 .cropper-container {
-  width: auto;
-  height: 380px;
+  flex: 8;
   display: grid;
   place-items: center
 }
 
 .cropper-center {
   display: none
+}
+
+.cropper-container {
+  overflow: hidden
 }
 
 .cropper-view-box {

@@ -42,7 +42,7 @@
 .edit-profile-popup-container {
     display: flex;
     flex-direction: column;
-    padding: 5px 0px 3px 0px;
+    padding: 5px 0px 0px 0px;
     width: 100%;
     max-width: 600px;
     height: 500px;
@@ -52,7 +52,7 @@
 
 .edit-profile-popup-exit-icon {
     cursor: pointer;
-    margin: auto 20px auto 10px;
+    margin: 7px 15px auto auto;
     height: 30px
 }
 
@@ -60,8 +60,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 5px 0;
-    margin-bottom: 10px
 }
 
 .edit-profile-popup-header-div-1 {
@@ -70,14 +68,19 @@
     height: 50px;
     flex-direction: column;
     justify-content: center;
-    padding-left: 10px;
-    text-align: center;
+    text-align: left;
+    padding-left: 30px
 }
 
 .edit-profile-popup-body {
     height: 100%;
     width: 100%;
     overflow-y: auto;
+}
+
+.profile1{
+    overflow: auto
+    
 }
 
 .profile1-container {
@@ -91,7 +94,6 @@
 .profile1-header {
     position: relative;
     padding-bottom: 10%;
-    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -163,11 +165,6 @@
     margin-bottom: 30px
 }
 
-.profile1-edit-profile-button-invoker {
-    align-self: flex-end;
-
-}
-
 .edit-profile1-bio {
     font-size: 15pt;
     width: 100%;
@@ -179,6 +176,22 @@
     border-radius: 5px;
 }
 
-.faker {
-    opacity: 1
+.edit-profile-popup-footer{
+    position: sticky;
+    bottom: 0px;
+    display: grid;
+    place-items: center;
+    border-top: 1px  solid rgba(0,0,0,.3);
+}
+
+.edit-profile-popup-footer-apply{
+    font-size: 12pt;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    margin: 5px 0;
+    background-color: #FF1744;
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDebouncedCallback } from 'use-debounce';
 import Axios from 'axios'
 
 import MyEditor from './MyEditor'
@@ -64,16 +63,11 @@ function EditProfile(props) {
                 })
         }
 
-        const debounced = useDebouncedCallback(
-            // function
-            (e) => {
-                let temp = uploadBody
-                temp.bio = e.target.value
-                setUploadBody(temp)
-            },
-            // delay in ms
-            1000
-        );
+        const onChangebio = (e) => {
+            let temp = uploadBody
+            temp.bio = e.target.value
+            setUploadBody(temp)
+        }
 
         const setImageOutput = (croppedCavas, type) => {
             let temp = uploadBody
@@ -85,6 +79,30 @@ function EditProfile(props) {
             setShowMyEditor(true)
         }
 
+        const onChangeGenerator = (type) => {
+            return (e) => {
+                e.preventDefault();
+                let files;
+                if (e.dataTransfer) {
+                    files = e.dataTransfer.files;
+                }
+                else if (e.target) {
+                    files = e.target.files;
+                }
+                const reader = new FileReader();
+                reader.onload = () => {
+                    setMyEditorOptions({
+                        type: type,
+                        setImageOutput: setImageOutput,
+                        imageInput: reader.result,
+                        setShowMyEditor: setShowMyEditor
+                    })
+                    showMyEditorHandle()
+                };
+                reader.readAsDataURL(files[0]);
+            };
+        }
+
         function FakeProfile(props) {
 
             return (
@@ -94,19 +112,17 @@ function EditProfile(props) {
                             <div 
                                 className="profile1-user-header-banner"
                                 onClick={()=>{ 
-                                    setMyEditorOptions({
-                                        type: "banner",
-                                        setImageOutput: setImageOutput,
-                                        imageInput: 
-                                            uploadBody.banner && uploadBody.banner.toDataURL()
-                                            || userProfile.banner
-                                            || ProfileBanner 
-                                        ,
-                                        setShowMyEditor: setShowMyEditor
-                                    })
-                                    showMyEditorHandle() 
+                                    const k1 = document.querySelector('#banner-input')
+                                    k1.click()
                                 }} 
                             >
+                                <input 
+                                    id="banner-input" 
+                                    type="file" 
+                                    onChange={onChangeGenerator('banner')} 
+                                    hidden="hidden"
+                                    accept="image/*"
+                                />
                                 <img 
                                     className="profile1-user-header-banner-img" 
                                     alt="" 
@@ -117,25 +133,17 @@ function EditProfile(props) {
                                     }
                                 />
                                 <div className="profile1-user-header-banner-msg">
-                                    <span>alterar imagem</span>
+                                    <span>alterar</span>
                                 </div>
                             </div>
                             <div 
                                 className="profile1-user-header-avatar" 
                                 onClick={()=>{ 
-                                    setMyEditorOptions({
-                                        type: "avatar",
-                                        setImageOutput: setImageOutput,
-                                        imageInput: 
-                                            uploadBody.avatar && uploadBody.avatar.toDataURL()
-                                            || userProfile.avatar
-                                            || UserIcon
-                                            ,
-                                        setShowMyEditor: setShowMyEditor
-                                    })
-                                    showMyEditorHandle() 
+                                     const k2 = document.querySelector('#avatar-input')
+                                    k2.click()
                                 }}
                                 >
+                                    <input id="avatar-input" type="file" accept="image/*" onChange={onChangeGenerator('avatar')} hidden="hidden"/>
                                     <img 
                                         className="profile1-user-header-avatar-img" 
                                         alt="" 
@@ -146,7 +154,7 @@ function EditProfile(props) {
                                             }
                                     />
                                     <div className="profile1-user-header-avatar-msg">
-                                        <span>alterar imagem</span>
+                                        <span>alterar</span>
                                     </div>
                             </div>
                         </div>
@@ -154,21 +162,26 @@ function EditProfile(props) {
                             <h3>{userProfile.username}</h3>
                             <textarea 
                                 className="edit-profile1-bio"
-                                defaultValue={userProfile.bio}
-                                onChange={(e) => debounced(e)}
+                                onChange={onChangebio}
+                                defaultValue={
+                                    uploadBody.bio && uploadBody.bio
+                                    || userProfile.bio
+                                }
                                 >
                             </textarea>
                         </div>
                     </div>
+                    <div className="edit-profile-popup-footer">
+                        <input className="edit-profile-popup-footer-apply" type="submit"  onClick={updateHandle} value="Atualizar" />
+                    </div>
                 </div>
             )
         }
-
+        
         return (
             <div className="edit-profile-popup">
                 <div className="edit-profile-popup-container">
                     <div className="edit-profile-popup-header">
-                        <input type="submit"  onClick={updateHandle} />
                         <div className="edit-profile-popup-header-div-1">
                             {flashMessages.length !== 0 || isLoading ?
                             '' : <h3 className="edit-profile-popup-header-div-1-title">Edite Seu Perfil</h3>}
