@@ -16,3 +16,10 @@ body{
         margin: 0 auto
     }
 }
+.no-underline{
+    text-decoration: none;
+}
+
+.no-underline:visited{
+    text-decoration: none;
+}

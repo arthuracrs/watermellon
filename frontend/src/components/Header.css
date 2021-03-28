@@ -42,15 +42,21 @@
     }
 }
 
-.header-home-link {
+.header-link {
     font-weight: bold;
     font-size: 18pt;
     text-decoration: none;
     color: black;
 }
 
-.header-home-link:visited {
+.header-link:visited {
     color: black;
+}
+
+@media only screen and (min-width: 600px) {
+    .search-link{
+        display: none
+    }
 }
 
 .selected {
