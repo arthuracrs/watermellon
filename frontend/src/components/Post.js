@@ -33,7 +33,7 @@ function Post(props) {
         <div className="post">
             <div className="post-info">
                 <div className="post-info-container-1">
-                    <img className="post-user-icon" alt="" src={UserIcon}/>
+                    <img className="post-user-icon" alt="" src={props.x.userId.avatar || UserIcon}/>
                 </div>
                 <div className="post-info-container-2">
                     <Link to={"/"+ props.x.userId.username} className="no-underline post-username-link"><span className="post-username">{props.x.userId.username}</span></Link>

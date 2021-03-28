@@ -17,10 +17,10 @@ function SearchUser() {
 
     function onChangeHandle(e) {
 
-        if (e.target.value == "") setQuery([])
+        if (e.target.value === "") setQuery([])
         Axios.get(process.env.REACT_APP_API_URL + '/search/' + e.target.value, { withCredentials: true })
             .then(res => {
-                if (res.data.flashMessages[0].ok == true) {
+                if (res.data.flashMessages[0].ok === true) {
                     setQuery(res.data.query)
                 }
             })
@@ -31,10 +31,13 @@ function SearchUser() {
             <div className="search-user">
                 <span className="search-user-tittle">Pesquisar Usuario</span>    
                 <input className="search-user-input" onChange={debounced} placeholder="procurar usuario" type="text"/>
-                {query[0] != 0 ? query.map(x=>
+                {query[0] !== 0 ? query.map(x=>
                         <Link to={x.username} key={x._id} className="no-underline">
                             <div className="search-users-single-container">
-                                <img className="search-users-user-icon" alt="" src={UserIcon}/>
+                                <img className="search-users-user-icon" alt="" src={
+                                x.avatar
+                                || UserIcon
+                                }/>
                                 <div className="search-users-user-info">
                                     <span className="search-users-single-username">
                                         {x.username}

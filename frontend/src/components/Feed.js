@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
-import { useParams } from "react-router-dom";
 
 import Loading from './Loading'
 import Post from './Post'
@@ -18,8 +17,6 @@ function Feed(props) {
     const [refresh, setRefresh] = useState(false)
 
     const refreshHandle = () => { setRefresh(!refresh) }
-
-    let { pathUsername } = useParams();
 
     function LoadPosts() {
 
@@ -40,6 +37,7 @@ function Feed(props) {
 
     useEffect(() => {
         LoadPosts()
+        return abortSetStates
     }, [refresh])
 
 
@@ -50,7 +48,7 @@ function Feed(props) {
                 <div className="user-post-list-title-container">
                     <h3 className="user-post-list-title">Feed</h3>
                     <FlashMessages flashMessages={ flashMessages }/> 
-                    { posts.length == 0 ? 
+                    { posts.length === 0 ? 
                          <span className="user-post-list-none-post">Você deveria seguir alguns perfis</span>
                          : posts.map(x => <Post refreshHandle={refreshHandle} key={x._id} x={x} />) 
                     } 

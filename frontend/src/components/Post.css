@@ -36,7 +36,8 @@
 }
 
 .post-username-link{
-    color: #FF1744    
+    color: #FF1744;
+    text-decoration: none
 }
 
 .post-text{
