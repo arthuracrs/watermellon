@@ -7,7 +7,6 @@ import {
 from "react-router-dom"
 
 import CheckAuth from '../components/CheckAuth'
-import ListUsers from '../components/ListUsers'
 import Header from '../components/Header'
 import CreatePost from '../components/CreatePost'
 import Profile from '../components/Profile'
@@ -34,6 +33,9 @@ function Dashboard() {
                                     <CreatePost/>
                                     <Feed/>
                                 </div>
+                            </Route>
+                            <Route path={"/user/search"} exact>
+                                <SearchUser/>
                             </Route>
                             <Route path={"/:pathUsername"} exact>
                                 <Profile loggedUser={loggedUser}/>
