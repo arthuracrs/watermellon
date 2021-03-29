@@ -3,7 +3,7 @@ const db = require("../models.js")
 module.exports = (req, res) => {
     const flashMessages = []
 
-    db.User.find({ username: { $regex: req.params.username, $ne: res.locals.user.username } }, 
+    db.User.find({ username: { $regex: req.params.username, $options: 'i', $ne: res.locals.user.username } }, 
         'username avatar'
     )
         .limit(5)
