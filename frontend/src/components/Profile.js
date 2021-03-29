@@ -19,7 +19,7 @@ function Profile(props) {
 
         const [userProfile, setUserProfile] = useState({})
         const [isLoading, setIsLoading] = useState(true)
-        const [loggedUser, setLoggedUser] = useState(props.loggedUser)
+        const [loggedUser] = useState(props.loggedUser)
         const [refresh, setRefresh] = useState(true)
         const handleRefresh = () => { setRefresh(!refresh) }
 
@@ -27,9 +27,7 @@ function Profile(props) {
             Axios.get(process.env.REACT_APP_API_URL + "/" + pathUsername, { withCredentials: true })
                 .then(res => {
                     if (res.data.flashMessages[0].ok === true) {
-                        setLoggedUser(res.data.user)
                         setUserProfile(res.data.content)
-                        console.log(res.data.content)
                         setIsLoading(false)
                     }
                 })

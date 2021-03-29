@@ -1,7 +1,6 @@
 .profile-header{
     position: relative;
     padding-bottom: 5%;
-    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }

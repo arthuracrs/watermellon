@@ -127,7 +127,7 @@ function EditProfile(props) {
                                     className="profile1-user-header-banner-img" 
                                     alt="" 
                                     src={ 
-                                        uploadBody.banner && uploadBody.banner.toDataURL()
+                                        (uploadBody.banner && uploadBody.banner.toDataURL())
                                         || userProfile.banner
                                         || ProfileBanner 
                                     }
@@ -148,7 +148,7 @@ function EditProfile(props) {
                                         className="profile1-user-header-avatar-img" 
                                         alt="" 
                                         src={ 
-                                            uploadBody.avatar && uploadBody.avatar.toDataURL()
+                                            (uploadBody.avatar && uploadBody.avatar.toDataURL())
                                             || userProfile.avatar
                                             || UserIcon
                                             }
@@ -164,7 +164,7 @@ function EditProfile(props) {
                                 className="edit-profile1-bio"
                                 onChange={onChangebio}
                                 defaultValue={
-                                    uploadBody.bio && uploadBody.bio
+                                    (uploadBody.bio && uploadBody.bio)
                                     || userProfile.bio
                                 }
                                 >
