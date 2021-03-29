@@ -32,7 +32,7 @@ function SearchUser() {
                 <span className="search-user-tittle">Pesquisar Usuario</span>    
                 <input className="search-user-input" onChange={debounced} placeholder="procurar usuario" type="text"/>
                 {query[0] !== 0 ? query.map(x=>
-                        <Link to={x.username} key={x._id} className="no-underline">
+                        <Link to={'/'+x.username} key={x._id} className="no-underline">
                             <div className="search-users-single-container">
                                 <img className="search-users-user-icon" alt="" src={
                                 x.avatar
